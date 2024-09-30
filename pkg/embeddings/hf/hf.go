@@ -160,6 +160,16 @@ func NewHuggingFaceEmbeddingInferenceFunction(baseURL string, opts ...Option) (*
 	}, nil
 }
 
+func (e *HuggingFaceEmbeddingFunction) EmbedDocumentsByFloat32(ctx context.Context, documents []string) ([][]float32, error) {
+	response, err := e.apiClient.CreateEmbedding(ctx, &CreateEmbeddingRequest{
+		Inputs: documents,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return response.Embeddings, nil
+}
+
 func (e *HuggingFaceEmbeddingFunction) EmbedDocuments(ctx context.Context, documents []string) ([]*types.Embedding, error) {
 	response, err := e.apiClient.CreateEmbedding(ctx, &CreateEmbeddingRequest{
 		Inputs: documents,
